@@ -1,0 +1,72 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Around Me <span *ngIf="countryName">({{countryName}})</span></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+
+  <!-- Skeleton List -->
+  <ion-list *ngIf="!isDataLoaded">
+    <custom-skeleton></custom-skeleton>
+  </ion-list>
+
+  <ion-list-header *ngIf="isDataLoaded && !articles?.length">
+    No News Found
+  </ion-list-header>
+
+  <ion-list class="ion-no-padding" #newsList *ngIf="isDataLoaded && articles?.length">
+    <ng-container>
+      <ion-row class="ion-no-padding">
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let article of articles">
+          <ion-card>
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="{{getSourceImage(article.source.id)}}">
+              </ion-avatar>
+              <ion-label>
+                <h3>{{article.source.name}}</h3>
+                <p>{{article.publishedAt | amDateFormat:'LL'}}</p>
+              </ion-label>
+              <ion-note slot="end">
+                <ion-button fill="clear" class="small-button" color="dark" disabled>
+                  <ion-icon slot="start" name='time-outline'></ion-icon>
+                  <ion-label>{{article.publishedAt | amTimeAgo:true}} ago</ion-label>
+                </ion-button>
+              </ion-note>
+            </ion-item>
+            <img src="{{article.urlToImage}}" [alt]="article?.source?.name" class="clickable" (click)="openFullArticle(article.url)">
+            <ion-card-header>
+              <ion-card-title mode="md">{{article.title}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              {{article.description}}
+            </ion-card-content>
+            <ion-footer>
+              <ion-row class="ion-no-padding">
+                <ion-col>
+                  <ion-button fill="clear" size="small" color="tertiary" disabled>
+                    <ion-icon slot="start" name='thumbs-up'></ion-icon>
+                    Like
+                  </ion-button>
+                </ion-col>
+                <ion-col class="ion-text-center">
+                  <ion-button fill="clear" size="small" color="tertiary" (click)="saveArticle(article)">
+                    <ion-icon slot="start" name='bookmark-outline'></ion-icon>
+                    Favorite
+                  </ion-button>
+                </ion-col>
+                <ion-col class="ion-text-right">
+                  <ion-button fill="clear" size="small" color="tertiary" (click)="shareArticle(article)">
+                    <ion-icon slot="start" name='share-social'></ion-icon>
+                    Share
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-footer>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-list>
+</ion-content>

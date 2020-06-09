@@ -1,0 +1,47 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Saved Articles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Saved Articles</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Skeleton List -->
+  <ion-list *ngIf="!isDataLoaded">
+    <custom-skeleton></custom-skeleton>
+  </ion-list>
+
+  <ion-list-header *ngIf="isDataLoaded && !articles?.length">
+    No News Found
+  </ion-list-header>
+
+  <ion-list class="ion-no-padding" #newsList *ngIf="isDataLoaded && articles?.length">
+    <ng-container *ngFor="let article of articles;let idx = index">
+      <ion-item-sliding #slidingItem>
+        <ion-item button detail="false" (click)="openFullArticle(article.url)">
+          <ion-thumbnail slot="start">
+            <img src="{{getSourceImage(article.source.id)}}">
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{article.source.name}}</h2>
+            <h6>{{article.title}}</h6>
+            <p>{{article.description}}</p>
+          </ion-label>
+          <ion-note slot="end">
+            <ion-label>{{article.publishedAt | amTimeAgo:true}} ago</ion-label>
+          </ion-note>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="removeArticle(slidingItem, article, idx)">Delete</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ng-container>
+  </ion-list>
+
+</ion-content>

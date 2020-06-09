@@ -1,0 +1,50 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color='primary' (click)="startApp()" [hidden]="!showSkip">Skip</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-slides #slides (ionSlideWillChange)="onSlideChangeStart($event)" pager="true">
+    <ion-slide>
+      <img src="assets/images/ica-slidebox-img-1.png" class="slide-image" />
+      <h2 class="slide-title">
+        Welcome to
+        <b>Izindaba25</b>
+      </h2>
+      <p>
+        The
+        <b>news app</b> gives you all the latest news. Available on both iOS, Android (Across all devices).
+      </p>
+      <p>Made with <ion-icon name='heart' color='danger'></ion-icon> by <b>Sakhamen</b></p>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/images/ica-slidebox-img-2.png" class="slide-image" />
+      <h2 class="slide-title">Izindaba25 Features?</h2>
+      <p><ion-text color="primary">Explore</ion-text> gives you News around you.</p>
+      <p><ion-text color="secondary">Favorite</ion-text> enables you to save an article and read it later (yes, no internet needed).</p>
+      <p><ion-text color="tertiary">Share</ion-text> article on Twitter, facebook, and whatsapp seemlessly.</p>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/images/ica-slidebox-img-3.png" class="slide-image" />
+      <h2 class="slide-title">Izindaba25 Tools?</h2>
+      <p><b>Ionic Framework (v5)</b></p>
+      <p><b>Angular (v9)</b></p>
+      <p><b>Newsapi.org</b></p>
+      <p><b>Toons of Native Plugins</b> and <ion-icon name='cafe'></ion-icon> </p>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/images/ica-slidebox-img-4.png" class="slide-image" />
+      <h2 class="slide-title">Ready to Read?</h2>
+      <ion-button fill="clear" (click)="startApp()">
+        Continue
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
