@@ -19,16 +19,10 @@ export class HomePage implements OnInit {
   @ViewChild(IonContent, { static: false }) content: IonContent;
 
   ios: boolean;
-  dayIndex = 0;
-  queryText = '';
   segment = 'all';
-  excludeTracks: any = [];
-  shownSessions: any = [];
-  groups: any = [];
-  confDate: string;
-  showSearchbar: boolean;
-
   articles: any = [];
+  queryText:string = '';
+  showSearchbar: boolean;
   isDataLoaded: boolean = false;
 
   constructor(
@@ -42,10 +36,7 @@ export class HomePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.updateSchedule();
     this.ios = this.config.get('mode') === 'ios';
-
-    console.log('home**ngOnInit');
 
     this.newsData.getFavoriteArticles();
     this.loadAllArticles();
