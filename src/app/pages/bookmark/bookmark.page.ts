@@ -53,7 +53,8 @@ export class BookmarkPage implements OnInit {
   openFullArticle(url: string) {
     const target = "_self";
     const options: InAppBrowserOptions = {
-      location:'no'
+      location: 'no',
+      zoom: 'no'
     };
 
     this.inAppBrowser.create(url, target, options);

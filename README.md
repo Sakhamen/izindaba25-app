@@ -2,7 +2,7 @@
 
 This application is created with Ionic Framework (v5) and Angular (v9).
 
-[izindaba25 Apk](https://www.dropbox.com/s/dmzpljvym03f21s/izindaba25.apk?dl=0 )
+[izindaba25 Apk](https://www.dropbox.com/s/wnffocuw5zpyzfl/Izindaba25.apk?dl=0)
 
 API used: https://newsapi.org/
 
