@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-
-import { Storage } from '@ionic/storage';
+import { MenuController } from '@ionic/angular';
 
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
@@ -17,12 +16,12 @@ export class LoginPage implements OnInit {
   loginForm: any;
 
   constructor(
-    private storage: Storage,
     private router: Router,
     private alert: AlertService,
     private loader: LoaderService,
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private menuCtrl: MenuController
   ) {
     this.loginForm  = this.formBuilder.group({
         username: ['', Validators.required],
@@ -30,10 +29,10 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.storage.clear().then(res => {
-      console.log('everything cleared');
-    });
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    this.menuCtrl.enable(false);
   }
 
   login() {
@@ -69,6 +68,10 @@ export class LoginPage implements OnInit {
         this.alert.showAlert(error);
         this.loader.dismiss();
     });
+  }
+
+  ionViewDidLeave() {
+    this.menuCtrl.enable(true);
   }
 
 }

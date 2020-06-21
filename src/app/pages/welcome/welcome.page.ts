@@ -14,7 +14,7 @@ export class WelcomePage implements OnInit {
   @ViewChild('slides', { static: true }) slides: IonSlides;
 
   constructor(
-    private menu: MenuController,
+    private menuCtrl: MenuController,
     private router: Router,
     private storage: Storage
   ) { }
@@ -28,9 +28,7 @@ export class WelcomePage implements OnInit {
       }
     });
 
-    // this.storage.clear();
-
-    this.menu.enable(false);
+    this.menuCtrl.enable(false);
   }
 
   startApp() {
@@ -47,7 +45,7 @@ export class WelcomePage implements OnInit {
 
   ionViewDidLeave() {
     // enable the root left menu when leaving the tutorial page
-    this.menu.enable(true);
+    this.menuCtrl.enable(true);
   }
 
 }
