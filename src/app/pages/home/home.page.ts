@@ -46,15 +46,17 @@ export class HomePage implements OnInit {
     this.content.scrollToTop();
   }
 
-  loadAllArticles() {
+  loadAllArticles(event?: any) {
 
     this.newsAPIService.getInitialArticles().then(result => {
         console.log('getInitialArticles result', result);
         this.articles = result["articles"];
         this.isDataLoaded = true;
+        if (event) event.target.complete();
     }).catch(error => {
         console.log('getInitialArticles error', error);
         this.isDataLoaded = true;
+        if (event) event.target.complete();
         let errorText:any = error;
         if (errorText.status === 0) {
             this.alert.showAlert("We are having trouble connecting. Please check your WIFI and Mobile Internet settings.");
@@ -65,15 +67,17 @@ export class HomePage implements OnInit {
     });
   }
 
-  loadCoronaVirusArticles() {
+  loadCoronaVirusArticles(event?: any) {
 
     this.newsAPIService.getCoronaVirusArticles().then(result => {
         console.log('getCoronaVirusArticles result', result);
         this.articles = result["articles"];
         this.isDataLoaded = true;
+        if (event) event.target.complete();
     }).catch(error => {
         console.log('getCoronaVirusArticles error', error);
         this.isDataLoaded = true;
+        if (event) event.target.complete();
         let errorText:any = error;
         if (errorText.status === 0) {
             this.alert.showAlert("We are having trouble connecting. Please check your WIFI and Mobile Internet settings.");
@@ -110,6 +114,14 @@ export class HomePage implements OnInit {
         }
     });
 
+  }
+
+  pullToRefresh(event: any) {
+    if (this.segment === "all") {
+      this.loadAllArticles(event);
+    } else {
+      this.loadCoronaVirusArticles(event);
+    }
   }
 
   toggleSegment() {

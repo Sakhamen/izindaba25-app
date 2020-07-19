@@ -39,6 +39,27 @@ export class AlertService {
     await alert.present();
   }
 
+  async showExitConfirm() {
+    const alert = await this.alertController.create({
+      header: 'App termination',
+      message: 'Do you want to close the app?',
+      backdropDismiss: false,
+      buttons: [{
+        text: 'Stay',
+        role: 'cancel',
+        handler: () => {
+          console.log('Exit canceled!');
+        }
+      }, {
+        text: 'Exit',
+        handler: () => {
+          navigator['app'].exitApp();
+        }
+      }]
+    });
+    await alert.present();
+  }
+
   async showToast(msg: any, position?: any) {
     if (!position) position = 'top';
     const toast = await this.toastController.create({

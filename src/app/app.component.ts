@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
+import { Location } from '@angular/common';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
@@ -44,8 +45,10 @@ export class AppComponent {
     private authService: AuthService,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private _location: Location,
     private alert: AlertService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private alertController: AlertController
   ) {
     this.initializeApp();
   }
@@ -60,12 +63,12 @@ export class AppComponent {
     });
   }
 
-
   async initializeApp() {
     await this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.styleBlackOpaque();
       this.splashScreen.hide();
       this.getDeviceInformation();
+      this.backbuttonHandler();
     });
   }
 
@@ -85,12 +88,36 @@ export class AppComponent {
 
   }
 
-  getDeviceInformation() {
+  private getDeviceInformation() {
      this.appVersion.getVersionNumber().then(value => {
          this.app_version = value;
       }, error => {
         console.error('getVersionNumber', error);
       });
+  }
+
+  private backbuttonHandler() {
+    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+      if (this._location.isCurrentPathEqualTo('/tabs/home')) {
+        // Show Exit Alert!
+        console.log('Show Exit Alert!');
+        this.alert.showExitConfirm();
+        processNextHandler();
+      } else {
+        // Navigate to back page
+        this._location.back();
+      }
+    });
+
+    this.platform.backButton.subscribeWithPriority(5, () => {
+      this.alertController.getTop().then(r => {
+        if (r) {
+          navigator['app'].exitApp();
+        }
+      }).catch(e => {
+        console.log(e);
+      });
+    });
   }
 
 }

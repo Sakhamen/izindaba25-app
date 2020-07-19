@@ -6,6 +6,11 @@
 
 <ion-content fullscreen="true">
 
+  <!--Pull to Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="pullToRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <!-- Skeleton List -->
   <ion-list *ngIf="!isDataLoaded">
     <custom-skeleton></custom-skeleton>

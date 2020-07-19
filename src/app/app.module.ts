@@ -17,6 +17,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
+import { FormsModule } from '@angular/forms';
 
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -26,6 +27,7 @@ import { IonicStorageModule } from '@ionic/storage';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     HttpClientModule,
     ComponentsModule,
     IonicModule.forRoot(),

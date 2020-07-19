@@ -28,7 +28,16 @@
               <ion-label>Logout</ion-label>
             </ion-item>
           </ion-menu-toggle>
+
+          <ion-item>
+            <ion-icon slot="start" name="moon-outline"></ion-icon>
+            <ion-label>
+              Dark Mode
+            </ion-label>
+            <ion-toggle [(ngModel)]="dark"></ion-toggle>
+          </ion-item>
         </ion-list>
+
       </ion-content>
 
       <ion-footer>

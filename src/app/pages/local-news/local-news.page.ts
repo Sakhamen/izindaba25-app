@@ -62,14 +62,16 @@ export class LocalNewsPage implements OnInit {
     .catch(error => this.alert.showAlert(error));
   }
 
-  loadLocalNews(countryCode: string) {
+  loadLocalNews(countryCode: string, event?: any) {
     this.newsAPIService.getArticlesByCountryCode(countryCode).then(result => {
       this.articles = result["articles"];
       this.isDataLoaded = true;
+      if (event) event.target.complete();
     })
     .catch(error => {
       console.log('getInitialArticles error', error);
       this.isDataLoaded = true;
+      if (event) event.target.complete();
       let errorText:any = error;
       if (errorText.status === 0) {
           this.alert.showAlert("We are having trouble connecting. Please check your WIFI and Mobile Internet settings.");
@@ -94,6 +96,10 @@ export class LocalNewsPage implements OnInit {
       this.newsData.addToFavorite(article);
       this.alert.showToast("article was successfully added to favorite.");
     }
+  }
+
+  pullToRefresh(event: any) {
+    this.loadLocalNews(event);
   }
 
   openFullArticle(url: string) {
