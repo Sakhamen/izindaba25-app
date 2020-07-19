@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
+import { IonItemSliding } from '@ionic/angular';
 
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 
@@ -60,7 +61,7 @@ export class BookmarkPage implements OnInit {
     this.inAppBrowser.create(url, target, options);
   }
 
-  async removeArticle(slidingItem: HTMLIonItemSlidingElement, article: any, index: number) {
+  async removeArticle(slidingItem: IonItemSliding, article: any, index: number) {
 
     const alert = await this.alertCtrl.create({
       header: article.title,
