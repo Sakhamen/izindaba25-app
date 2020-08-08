@@ -12,8 +12,8 @@ export class CheckTutorialService implements CanLoad {
     private storage: Storage
   ) { }
 
-  canLoad() {
-    return this.storage.get('ion_did_welcome').then(res => {
+  async canLoad() {
+    return await this.storage.get('ion_did_welcome').then(res => {
       if (res) {
         this.router.navigate(['/login']);
         return false;

@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AlertController } from '@ionic/angular';
-import { IonItemSliding } from '@ionic/angular';
+import { AlertController, IonItemSliding, IonContent } from '@ionic/angular';
 
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 
-import { NewsDataService } from '../../services/news-data.service';
 import { AlertService } from '../../services/alert.service';
+import { EventsService } from '../../services/events.service';
+import { NewsDataService } from '../../services/news-data.service';
 
 @Component({
   selector: 'app-bookmark',
@@ -14,17 +14,23 @@ import { AlertService } from '../../services/alert.service';
   styleUrls: ['./bookmark.page.scss'],
 })
 export class BookmarkPage implements OnInit {
+  @ViewChild(IonContent, { static: false }) content: IonContent;
 
   articles: any = [];
   isDataLoaded: boolean = false;
 
+  private serviceSubscription: any;
+
   constructor(
     private storage: Storage,
     private alert: AlertService,
+    private events: EventsService,
     private newsData: NewsDataService,
     private alertCtrl: AlertController,
     private inAppBrowser: InAppBrowser
-  ) { }
+  ) {
+    this.eventListener();
+  }
 
   ngOnInit() {}
 
@@ -87,7 +93,18 @@ export class BookmarkPage implements OnInit {
       ]
     });
     await alert.present();
+  }
 
+  eventListener() {
+    this.serviceSubscription = this.events.getMessage().subscribe(data => {
+        if (data.message === "scrollToTop") {
+          this.content.scrollToTop(300);
+        }
+    });
+  }
+
+  ngOnDestroy() {
+    this.events.cleanup(this.serviceSubscription);
   }
 
 }

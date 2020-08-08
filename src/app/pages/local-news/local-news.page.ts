@@ -5,9 +5,11 @@ import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 import { AlertService } from '../../services/alert.service';
-import { LocationService } from '../../services/location.service';
+import { EventsService } from '../../services/events.service';
 import { NewsApiService } from '../../services/news-api.service';
+import { LocationService } from '../../services/location.service';
 import { NewsDataService } from '../../services/news-data.service';
+import { AlgorithmService } from '../../services/algorithm.service';
 
 @Component({
   selector: 'app-local-news',
@@ -22,28 +24,29 @@ export class LocalNewsPage implements OnInit {
   countryName: string = '';
   isDataLoaded: boolean = false;
 
+  private serviceSubscription: any;
+
   constructor(
     private alert: AlertService,
+    private events: EventsService,
     private newsData: NewsDataService,
     private inAppBrowser: InAppBrowser,
     private socialSharing: SocialSharing,
+    private algoService: AlgorithmService,
     private newsAPIService: NewsApiService,
     private locationService: LocationService,
     private actionSheetCtrl: ActionSheetController
-  ) { }
+  ) {
+    this.eventListener();
+  }
 
   ngOnInit() {
     this.newsData.getFavoriteArticles();
     this.checkGPSPermission();
   }
 
-  ionViewWillEnter() {
-    this.content.scrollToTop();
-  }
-
   checkGPSPermission() {
     this.locationService.checkGPSPermission().then(result => {
-      console.log('check permission', result);
       this.loadCoordinates();
     })
     .catch(error => {
@@ -54,7 +57,7 @@ export class LocalNewsPage implements OnInit {
 
   loadCoordinates() {
     this.locationService.getLocationCoordinates().then(result => {
-      console.log('getLocationCoordinates', result);
+      // console.log('getLocationCoordinates', result);
       let data: any = result;
       this.countryName = data.countryName;
       this.loadLocalNews(data.countryCode);
@@ -114,8 +117,8 @@ export class LocalNewsPage implements OnInit {
 
   async shareArticle(article: any) {
     let options = {
-      message: `${article.title} from *Izindaba25* .`,
-      image: article.urlToImage,
+      message: `${article.title} from *Izindaba25*.`,
+      image: this.algoService.getImageUrl(article.urlToImage),
       url: article.url
     };
 
@@ -162,13 +165,22 @@ export class LocalNewsPage implements OnInit {
         text: 'Cancel',
         icon: 'close',
         role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
+        handler: () => {}
       }]
     });
     await actionSheet.present();
+  }
 
+  eventListener() {
+    this.serviceSubscription =  this.events.getMessage().subscribe(data => {
+        if (data.message == "scrollToTop") {
+          this.content.scrollToTop(300);
+        }
+    });
+  }
+
+  ngOnDestroy() {
+    this.events.cleanup(this.serviceSubscription);
   }
 
 }

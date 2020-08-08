@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { EventsService } from '../../services/events.service';
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -7,6 +9,12 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(
+    private events: EventsService
+  ) {}
+
+  scrollToTop() {
+    this.events.sendMessage('scrollToTop');
+  }
 
 }

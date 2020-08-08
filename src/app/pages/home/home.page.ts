@@ -5,8 +5,10 @@ import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 import { AlertService } from '../../services/alert.service';
+import { EventsService } from '../../services/events.service';
 import { NewsApiService } from '../../services/news-api.service';
 import { NewsDataService } from '../../services/news-data.service';
+import { AlgorithmService } from '../../services/algorithm.service';
 
 @Component({
   selector: 'app-home',
@@ -25,25 +27,27 @@ export class HomePage implements OnInit {
   showSearchbar: boolean;
   isDataLoaded: boolean = false;
 
+  private serviceSubscription: any;
+
   constructor(
     private config: Config,
     private alert: AlertService,
+    private events: EventsService,
     private newsData: NewsDataService,
     private inAppBrowser: InAppBrowser,
     private socialSharing: SocialSharing,
+    private algoService: AlgorithmService,
     private newsAPIService: NewsApiService,
     private actionSheetCtrl: ActionSheetController
-  ) { }
+  ) {
+    this.eventListener();
+  }
 
   ngOnInit() {
     this.ios = this.config.get('mode') === 'ios';
 
     this.newsData.getFavoriteArticles();
     this.loadAllArticles();
-  }
-
-  ionViewWillEnter() {
-    this.content.scrollToTop();
   }
 
   loadAllArticles(event?: any) {
@@ -156,8 +160,8 @@ export class HomePage implements OnInit {
 
   async shareArticle(article: any) {
     let options = {
-      message: `${article.title} from *Izindaba25* .`,
-      image: article.urlToImage,
+      message: `${article.title} from *Izindaba25*.`,
+      image: this.algoService.getImageUrl(article.urlToImage),
       url: article.url
     };
 
@@ -204,13 +208,22 @@ export class HomePage implements OnInit {
         text: 'Cancel',
         icon: 'close',
         role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
+        handler: () => {}
       }]
     });
     await actionSheet.present();
+  }
 
+  eventListener() {
+    this.serviceSubscription =  this.events.getMessage().subscribe(data => {
+        if (data.message == "scrollToTop") {
+          this.content.scrollToTop(300);
+        }
+    });
+  }
+
+  ngOnDestroy() {
+    this.events.cleanup(this.serviceSubscription);
   }
 
 

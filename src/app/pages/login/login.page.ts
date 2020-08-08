@@ -14,6 +14,7 @@ import { LoaderService } from '../../services/loader.service';
 })
 export class LoginPage implements OnInit {
   loginForm: any;
+  showPassword: boolean = false;
 
   constructor(
     private router: Router,
@@ -33,6 +34,10 @@ export class LoginPage implements OnInit {
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   login() {
@@ -57,12 +62,11 @@ export class LoginPage implements OnInit {
     let data = { username: 'Guest07' };
 
     this.loader.show();
-    this.authService.loginUser(data).then(result => {
-        // console.log('login result', result);
+    this.authService.loginUser(data).then(() => {
         this.loginForm.reset();
-        this.alert.showToast("Successfully logged in.");
         this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
         this.loader.dismiss();
+        this.alert.showToast("Successfully logged in.");
     }).catch(error => {
         console.log('error', error);
         this.alert.showAlert(error);
