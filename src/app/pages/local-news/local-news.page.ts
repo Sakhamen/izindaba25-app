@@ -51,6 +51,7 @@ export class LocalNewsPage implements OnInit {
     })
     .catch(error => {
       console.error('checkGPSPermission error', error);
+      this.isDataLoaded = false;
       this.alert.showAlert(error)
     });
   }
@@ -62,13 +63,18 @@ export class LocalNewsPage implements OnInit {
       this.countryName = data.countryName;
       this.loadLocalNews(data.countryCode);
     })
-    .catch(error => this.alert.showAlert(error));
+    .catch(error => {
+      this.isDataLoaded = false;
+      this.alert.showAlert(error)
+    });
   }
 
   loadLocalNews(countryCode: string, event?: any) {
     this.newsAPIService.getArticlesByCountryCode(countryCode).then(result => {
-      this.articles = result["articles"];
-      this.isDataLoaded = true;
+      this.articles = this.algoService.filterNullArticles(result["articles"]);
+      setTimeout(() => {
+        this.isDataLoaded = true;
+      }, 100);
       if (event) event.target.complete();
     })
     .catch(error => {
@@ -123,7 +129,7 @@ export class LocalNewsPage implements OnInit {
     };
 
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Social Sharing',
+      header: 'Share Article',
       buttons: [{
         text: 'Share via Facebook',
         role: 'destructive',
@@ -158,7 +164,8 @@ export class LocalNewsPage implements OnInit {
             console.log('Whatsapp sharing success', res);
           }).catch(error => {
             console.error('Whatsapp sharing error', error);
-            this.alert.showCustomAlert('Whatsapp Sharing Error', error);
+            // this.alert.showCustomAlert('Whatsapp Sharing Error', error);
+            this.alert.showAlert("Oops, looks like we can't share this article on Whatsapp");
           });
         }
       }, {

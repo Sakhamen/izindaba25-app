@@ -54,8 +54,10 @@ export class HomePage implements OnInit {
 
     this.newsAPIService.getInitialArticles().then(result => {
         console.log('getInitialArticles result', result);
-        this.articles = result["articles"];
-        this.isDataLoaded = true;
+        this.articles = this.algoService.filterNullArticles(result["articles"]);
+        setTimeout(() => {
+          this.isDataLoaded = true;
+        }, 100);
         if (event) event.target.complete();
     }).catch(error => {
         console.log('getInitialArticles error', error);
@@ -75,8 +77,10 @@ export class HomePage implements OnInit {
 
     this.newsAPIService.getCoronaVirusArticles().then(result => {
         console.log('getCoronaVirusArticles result', result);
-        this.articles = result["articles"];
-        this.isDataLoaded = true;
+        this.articles = this.algoService.filterNullArticles(result["articles"]);
+        setTimeout(() => {
+          this.isDataLoaded = true;
+        }, 100);
         if (event) event.target.complete();
     }).catch(error => {
         console.log('getCoronaVirusArticles error', error);
@@ -106,7 +110,7 @@ export class HomePage implements OnInit {
 
     this.newsAPIService.searchForArticle(this.queryText).then(result => {
         console.log('searchForArticle result', result);
-        this.articles = result["articles"];
+        this.articles = this.algoService.filterNullArticles(result["articles"]);
     }).catch(error => {
         console.log('getCoronaVirusArticles error', error);
         let errorText:any = error;
@@ -166,7 +170,7 @@ export class HomePage implements OnInit {
     };
 
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Social Sharing',
+      header: 'Share Article',
       buttons: [{
         text: 'Share via Facebook',
         role: 'destructive',
@@ -201,7 +205,8 @@ export class HomePage implements OnInit {
             console.log('Whatsapp sharing success', res);
           }).catch(error => {
             console.error('Whatsapp sharing error', error);
-            this.alert.showCustomAlert('Whatsapp Sharing Error', error);
+            // this.alert.showCustomAlert('Whatsapp Sharing Error', error);
+            this.alert.showAlert("Oops, looks like we can't share this article on Whatsapp");
           });
         }
       }, {

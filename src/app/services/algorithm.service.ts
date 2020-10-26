@@ -7,6 +7,10 @@ export class AlgorithmService {
 
   constructor() { }
 
+  filterNullArticles(articles: any) {
+    return articles.filter(article => (article.urlToImage));
+  }
+
   getImageUrl(imageStr: string) {
     var nullWords = /googleusercontent/ig; // text1|text2
     var imageRegex = /[\/.](jpe?g|png|gif)$/i;

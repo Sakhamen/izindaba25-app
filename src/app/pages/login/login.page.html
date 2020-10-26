@@ -9,8 +9,7 @@
           <div class="ion-padding">
             <form [formGroup]="loginForm">
               <ion-item>
-                <ion-label position="floating">Username</ion-label>
-                <ion-input type="text" formControlName="username"></ion-input>
+                <ion-input placeholder="Username" type="text" formControlName="username"></ion-input>
               </ion-item>
               <div class="ion-padding-top" *ngIf="!loginForm.controls.username.valid && loginForm.controls.username.dirty">
                 <ion-text color="danger">Username is required.</ion-text>
