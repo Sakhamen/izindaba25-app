@@ -34,7 +34,7 @@
     "@ionic/pwa-elements": "^1.5.2",
     "@ionic/storage": "^2.2.0",
     "angular2-moment": "^1.9.0",
-    "cordova-android": "^8.1.0",
+    "cordova-android": "^11.0.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-android-permissions": "^1.0.2",
     "cordova-plugin-app-version": "^0.1.9",
