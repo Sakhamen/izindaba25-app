@@ -18,7 +18,7 @@
     "@angular/forms": "~21.2.23",
     "@angular/platform-browser": "~21.2.23",
     "@angular/platform-browser-dynamic": "~21.2.23",
-    "@angular/router": "~21.2.23",
+    "@angular/router": "~21.2.24",
     "@ionic-native/android-permissions": "^5.26.0",
     "@ionic-native/app-version": "^5.26.0",
     "@ionic-native/core": "^5.0.7",
